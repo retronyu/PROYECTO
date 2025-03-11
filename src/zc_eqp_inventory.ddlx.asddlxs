@@ -1,0 +1,61 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: { typeName: 'Equipment',
+                typeNamePlural: 'Equipments',
+                title: { type: #STANDARD, value: 'EquipmentName' } },
+  presentationVariant: [{ sortOrder: [{ by: 'EquipmentID', direction: #DESC }] }] }
+annotate view ZC_EQP_Inventory with {
+  @UI.facet: [ { id: 'EquipmentDetails',
+                  purpose: #STANDARD,
+                  type: #IDENTIFICATION_REFERENCE,
+                  label: 'Equipment Details',
+                  position: 10 },
+                { id: 'Assignments',
+                  purpose: #STANDARD,
+                  type: #LINEITEM_REFERENCE,
+                  label: 'Assignments',
+                  position: 20,
+                  targetElement: '_Assignment' },
+                { id: 'Location',
+                  purpose: #STANDARD,
+                  type: #LINEITEM_REFERENCE,
+                  label: 'Current Location',
+                  position: 30,
+                  targetElement: '_Location' },
+                { id: 'Maintenance',
+                  purpose: #STANDARD,
+                  type: #LINEITEM_REFERENCE,
+                  label: 'Maintenance History',
+                  position: 40,
+                  targetElement: '_Maintenance' } ]  
+  
+  @UI:{ identification: [{ position: 1, label: 'Equipment UUID' }] }
+  EquipmentUUID;
+  
+  @UI: { lineItem: [{ position: 10 }], identification: [{ position: 10 }] }
+  EquipmentID;
+  
+  @UI: { lineItem: [{ position: 20 }], identification: [{ position: 20 }] }
+  EquipmentName;
+  
+  @UI: { lineItem: [{ position: 30 }], identification: [{ position: 30 }] }
+  EquipmentType;
+  
+  @UI: { lineItem: [{ position: 40 }], identification: [{ position: 40 }] }
+  Status;
+  
+  @UI: { lineItem: [{ position: 50 }], identification: [{ position: 50 }] }
+  Manufacturer;
+  
+  @UI: { lineItem: [{ position: 60 }], identification: [{ position: 60 }] }
+  ModelNumber;
+  
+  @UI: { lineItem: [{ position: 70 }], identification: [{ position: 70 }] }
+  SerialNumber;
+  
+  @UI.hidden: true
+  LastChangedAt;
+  
+  @UI.hidden: true
+  LocalLastChangedAt;
+}

@@ -1,0 +1,11 @@
+@EndUserText.label: 'access control'
+@MappingRole: true
+define role ZC_EQP_INVENTORY {
+    grant
+        select
+            on
+                ZC_EQP_INVENTORY
+                    where
+                        inheriting conditions from entity ZIEQP_INVENTORY;
+                        
+}

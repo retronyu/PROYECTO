@@ -1,0 +1,33 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: { typeName: 'Maintenance',
+                typeNamePlural: 'Maintenance Records',
+                title: { type: #STANDARD, value: 'MaintenanceID' } } }
+annotate view ZC_EQP_Maintenance with {
+  @UI.facet: [ { id: 'MaintenanceDetails',
+                  purpose: #STANDARD,
+                  type: #IDENTIFICATION_REFERENCE,
+                  label: 'Maintenance Details',
+                  position: 10 } ]
+  
+  @UI: { identification: [{ position: 1, label: 'Maintenance UUID' }] }
+  MaintenanceUUID;
+  
+  @UI.hidden: true
+  EquipmentUUID;
+  
+  @UI: { lineItem: [{ position: 20 }], identification: [{ position: 20 }] }
+  MaintenanceID;
+  
+  @UI: { lineItem: [{ position: 30 }], identification: [{ position: 30 }] }
+  MaintenanceDate;
+  
+  @UI: { lineItem: [{ position: 40 }], identification: [{ position: 40 }] }
+  MaintenanceType;
+  
+  @UI: { lineItem: [{ position: 50 }], identification: [{ position: 50 }] }
+  TechnicianName;
+  
+  @UI: { lineItem: [{ position: 60 }], identification: [{ position: 60 }] }
+  Details;
+}

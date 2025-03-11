@@ -1,0 +1,33 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: { typeName: 'Assignment',
+                typeNamePlural: 'Assignments',
+                title: { type: #STANDARD, value: 'EmployeeID' } } }
+annotate view ZC_EQP_Assignment with {
+  @UI.facet: [ { id: 'AssignmentDetails',
+                  purpose: #STANDARD,
+                  type: #IDENTIFICATION_REFERENCE,
+                  label: 'Assignment Details',
+                  position: 10 } ]
+  
+  @UI: { identification: [{ position: 1, label: 'Assignment UUID' }] }
+  AssignmentUUID;
+  
+  @UI.hidden: true
+  EquipmentUUID;
+  
+  @UI: { lineItem: [{ position: 20 }], identification: [{ position: 20 }] }
+  EmployeeID;
+  
+  @UI: { lineItem: [{ position: 30 }], identification: [{ position: 30 }] }
+  AssignmentDate;
+  
+  @UI: { lineItem: [{ position: 40 }], identification: [{ position: 40 }] }
+  ReturnDate;
+  
+  @UI: { lineItem: [{ position: 50 }], identification: [{ position: 50 }] }
+  Location;
+  
+  @UI: { lineItem: [{ position: 60 }], identification: [{ position: 60 }] }
+  Purpose;
+}

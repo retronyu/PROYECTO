@@ -1,0 +1,33 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: { typeName: 'Location',
+                typeNamePlural: 'Locations',
+                title: { type: #STANDARD, value: 'LocationName' } } }
+annotate view ZC_EQP_Location with {
+  @UI.facet: [ { id: 'LocationDetails',
+                  purpose: #STANDARD,
+                  type: #IDENTIFICATION_REFERENCE,
+                  label: 'Location Details',
+                  position: 10 } ]
+  
+  @UI: { identification: [{ position: 1, label: 'Location UUID' }] }
+  LocationUUID;
+  
+  @UI.hidden: true
+  EquipmentUUID;
+  
+  @UI: { lineItem: [{ position: 20 }], identification: [{ position: 20 }] }
+  LocationID;
+  
+  @UI: { lineItem: [{ position: 30 }], identification: [{ position: 30 }] }
+  LocationName;
+  
+  @UI: { lineItem: [{ position: 40 }], identification: [{ position: 40 }] }
+  Building;
+  
+  @UI: { lineItem: [{ position: 50 }], identification: [{ position: 50 }] }
+  Floor;
+  
+  @UI: { lineItem: [{ position: 60 }], identification: [{ position: 60 }] }
+  Room;
+}

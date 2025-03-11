@@ -1,0 +1,7 @@
+@EndUserText.label: 'Servicio expone Inventori'
+define service Zui_rap_inventory {
+  expose ZC_EQP_Inventory;
+  expose ZC_EQP_Assignment;
+  expose ZC_EQP_Location;
+  expose ZC_EQP_Maintenance;
+}

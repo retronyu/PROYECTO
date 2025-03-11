@@ -1,0 +1,12 @@
+@EndUserText.label: 'access control'
+@MappingRole: true
+define role ZIEQP_INVENTORY {
+    grant
+        select
+            on
+                ZIEQP_INVENTORY
+                    where
+//                         ( status ) = aspect pfcg_auth ( ZSTATUS , ZSTATUS, actvt = '03' ) ;
+                        true;
+                        
+}
