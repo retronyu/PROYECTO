@@ -35,8 +35,8 @@ CLASS zcl_generate_new_data IMPLEMENTATION.
     insert_equipments( out ).
     insert_employees( out ).
     insert_locations( out ).
-*    insert_assignments( out ).
-*    insert_maintenances( out ).
+    insert_assignments( out ).
+   insert_maintenances( out ).
     out->write( 'Carga de datos completada con éxito.' ).
   ENDMETHOD.
 
@@ -78,8 +78,8 @@ CLASS zcl_generate_new_data IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD insert_employees.
-    DATA: itab_employees TYPE TABLE OF zhr_employee,
-          wa_employee    TYPE zhr_employee,
+    DATA: itab_employees TYPE TABLE OF zrh_employee,
+          wa_employee    TYPE zrh_employee,
           lv_index       TYPE i.
 
     DO 5 TIMES.
@@ -95,7 +95,7 @@ CLASS zcl_generate_new_data IMPLEMENTATION.
       APPEND wa_employee TO itab_employees.
     ENDDO.
 
-    INSERT zhr_employee FROM TABLE @itab_employees.
+    INSERT zrh_employee FROM TABLE @itab_employees.
     COMMIT WORK.
     out->write( 'Carga exitosa de empleados.' ).
   ENDMETHOD.
@@ -165,22 +165,22 @@ CLASS zcl_generate_new_data IMPLEMENTATION.
           wa_assignment    TYPE zeqp_assignment,
           lv_index         TYPE i,
           lt_equipments    TYPE TABLE OF zeqp_inventory-equipment_uuid,
-          lt_employees     TYPE TABLE OF zhr_employee-employee_id.
+          lt_employees     TYPE TABLE OF zrh_employee-employee_id.
 
     " Obtener listas de equipos y empleados
     SELECT equipment_uuid FROM zeqp_inventory INTO TABLE @lt_equipments.
-    SELECT employee_id FROM zhr_employee INTO TABLE @lt_employees.
+    SELECT employee_id FROM zrh_employee INTO TABLE @lt_employees.
 
     DO 5 TIMES.
       lv_index = sy-index.
       wa_assignment-assignment_uuid = cl_uuid_factory=>create_system_uuid( )->create_uuid_x16( ).
 
       " Obtener un equipo aleatorio
-      DATA(lv_equipment_uuid) = lt_equipments[ lv_index MOD LINES( lt_equipments ) ].
+      DATA(lv_equipment_uuid) = lt_equipments[ lv_index - 1 MOD LINES( lt_equipments ) + 1 ].
       wa_assignment-equipment_uuid = lv_equipment_uuid.
 
       " Obtener un empleado aleatorio
-      DATA(lv_employee_id) = lt_employees[ lv_index MOD LINES( lt_employees ) ].
+      DATA(lv_employee_id) = lt_employees[ lv_index MOD LINES( lt_employees   )  ].
       wa_assignment-employee_id = lv_employee_id.
 
       wa_assignment-assignment_date = generate_random_date( ).
@@ -207,7 +207,7 @@ CLASS zcl_generate_new_data IMPLEMENTATION.
       wa_maintenance-maintenance_uuid = cl_uuid_factory=>create_system_uuid( )->create_uuid_x16( ).
 
       " Obtener un equipo aleatorio
-      DATA(lv_equipment_uuid_mnt) = lt_equipments_mnt[ lv_index MOD lines( lt_equipments_mnt ) ].
+      DATA(lv_equipment_uuid_mnt) = lt_equipments_mnt[ lv_index - 1 MOD lines( lt_equipments_mnt ) + 1 ].
       wa_maintenance-equipment_uuid = lv_equipment_uuid_mnt.
 
       wa_maintenance-maintenance_id   = |MTN{ lv_index WIDTH = 3 PAD = '0' }|.

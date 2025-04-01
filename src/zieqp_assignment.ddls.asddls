@@ -10,7 +10,7 @@ association [0..1] to ZI_HR_Employee as _Employee on $projection.EmployeeID = _E
 {
   key assignment_uuid       as AssignmentUUID,
       equipment_uuid        as EquipmentUUID,
-      employee_id           as EmployeeID,
+     employee_id           as EmployeeID,
       assignment_date       as AssignmentDate,
       return_date           as ReturnDate,
       location              as Location,

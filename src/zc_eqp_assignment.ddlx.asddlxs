@@ -2,7 +2,8 @@
 @UI: {
   headerInfo: { typeName: 'Assignment',
                 typeNamePlural: 'Assignments',
-                title: { type: #STANDARD, value: 'EmployeeID' } } }
+//                title: { type: #STANDARD, value: 'EmployeeID' } } }
+ title: { type: #STANDARD, value: 'AssignmentUUID' } } }
 annotate view ZC_EQP_Assignment with {
   @UI.facet: [ { id: 'AssignmentDetails',
                   purpose: #STANDARD,
@@ -16,7 +17,7 @@ annotate view ZC_EQP_Assignment with {
   @UI.hidden: true
   EquipmentUUID;
   
-  @UI: { lineItem: [{ position: 20 }], identification: [{ position: 20 }] }
+ @UI: { lineItem: [{ position: 20 }], identification: [{ position: 20 }] }
   EmployeeID;
   
   @UI: { lineItem: [{ position: 30 }], identification: [{ position: 30 }] }
