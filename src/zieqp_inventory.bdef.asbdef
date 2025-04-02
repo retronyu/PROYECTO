@@ -1,0 +1,80 @@
+managed ;
+
+
+define behavior for ZIEQP_Inventory alias Inventory
+implementation in class zbp_ieqp_inventory unique
+persistent table zeqp_inventory
+lock master
+authorization master ( instance )
+etag master LocalLastChangedAt
+{
+  create;
+  update;
+  delete;
+  field ( readonly )  EquipmentID;
+  field ( numbering : managed) EquipmentUUID ;
+
+
+  association _Assignment { create; }
+  association _Location { create; }
+  association _Maintenance { create; }
+
+
+
+  action ( features : instance ) MarcarReparacion result [1] $self;
+  determination setInitialID on modify {create;}
+  validation validartype   on save { field EquipmentType; create; }
+
+  mapping for zeqp_inventory
+  {
+  CreatedAt = created_at;
+  CreatedBy = created_by;
+  EquipmentID = equipment_id;
+  EquipmentName = equipment_name;
+  EquipmentType = equipment_type;
+  EquipmentUUID = equipment_uuid;
+  LastChangedAt = last_changed_at;
+  LastChangedBy = last_changed_by;
+  Manufacturer = manufacturer;
+  ModelNumber = model_number;
+  SerialNumber = serial_number;
+  Status = status;
+
+  }
+}
+
+define behavior for ZIEQP_Assignment //alias <alias_name>
+persistent table zeqp_assignment
+lock dependent by _Inventory
+authorization dependent by _Inventory
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) AssignmentUUID,EquipmentUUID;
+  association _Inventory;
+}
+
+define behavior for ZIEQP_Location //alias <alias_name>
+persistent table zeqp_location
+lock dependent by _Inventory
+authorization dependent by _Inventory
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) LocationUUID,EquipmentUUID;
+  association _Inventory;
+}
+
+define behavior for ZIEQP_Maintenance //alias <alias_name>
+persistent table zeqp_maintenance
+lock dependent by _Inventory
+authorization dependent by _Inventory
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) MaintenanceUUID,EquipmentUUID;
+  association _Inventory;
+}
