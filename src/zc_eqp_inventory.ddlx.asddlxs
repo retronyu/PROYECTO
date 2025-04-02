@@ -29,33 +29,38 @@ annotate view ZC_EQP_Inventory with {
                   position: 40,
                   targetElement: '_Maintenance' } ]  
   
-  @UI:{ identification: [{ position: 1, label: 'Equipment UUID' }] }
+   @UI:{ identification: [{ position: 1, label: 'UUID del equipo' }] }
   EquipmentUUID;
   
-  @UI: { lineItem: [{ position: 10 }], identification: [{ position: 10 }] }
+  @UI: { lineItem: [{ position: 10 }], identification: [{ position: 10, label: 'ID del equipo' }] }
   EquipmentID;
   
-  @UI: { lineItem: [{ position: 20 }], identification: [{ position: 20 }] }
+  @UI: { lineItem: [{ position: 20 }], identification: [{ position: 20, label: 'Nombre del equipo' }] }
   EquipmentName;
   
-  @UI: { lineItem: [{ position: 30 }], identification: [{ position: 30 }] }
+  @Consumption.valueHelpDefinition: [
+    { entity: { name: 'ZVALUEHELP_TYPES_EQUIP', element: 'EquipmentType' } }
+  ]
+  @UI: { lineItem: [{ position: 30 }], identification: [{ position: 30, label: 'Tipo de equipo' }] }
   EquipmentType;
   
- @UI: {  lineItem:       [ { position: 40 },
-                            { type: #FOR_ACTION, dataAction: 'MarcarReparacion', label: 'Marcar en Reparacion' }
-                          ],
-          identification: [ { position: 40 },
-                            { type: #FOR_ACTION, dataAction: 'MarcarReparacion', label: 'Marcar en Reparacion' }
-                          ] } 
+  @UI: { lineItem: [
+            { position: 40 },
+            { type: #FOR_ACTION, dataAction: 'MarcarReparacion', label: 'Marcar en reparación' }
+          ],
+          identification: [
+            { position: 40, label: 'Estado' },
+            { type: #FOR_ACTION, dataAction: 'MarcarReparacion', label: 'Marcar en reparación' }
+          ] } 
   Status;
   
-  @UI: { lineItem: [{ position: 50 }], identification: [{ position: 50 }] }
+  @UI: { lineItem: [{ position: 50 }], identification: [{ position: 50, label: 'Fabricante' }] }
   Manufacturer;
   
-  @UI: { lineItem: [{ position: 60 }], identification: [{ position: 60 }] }
+  @UI: { lineItem: [{ position: 60 }], identification: [{ position: 60, label: 'Modelo' }] }
   ModelNumber;
   
-  @UI: { lineItem: [{ position: 70 }], identification: [{ position: 70 }] }
+  @UI: { lineItem: [{ position: 70 }], identification: [{ position: 70, label: 'Número de serie' }] }
   SerialNumber;
   
   @UI.hidden: true

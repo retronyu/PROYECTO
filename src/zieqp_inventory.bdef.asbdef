@@ -11,7 +11,8 @@ etag master LocalLastChangedAt
   create;
   update;
   delete;
-  field ( readonly )  EquipmentID;
+  field ( readonly )  EquipmentID , EquipmentUUID ;
+//  field (readonly ) Status;
   field ( numbering : managed) EquipmentUUID ;
 
 
@@ -23,7 +24,10 @@ etag master LocalLastChangedAt
 
   action ( features : instance ) MarcarReparacion result [1] $self;
   determination setInitialID on modify {create;}
-  validation validartype   on save { field EquipmentType; create; }
+
+  validation validartype   on save { field EquipmentType;  }
+  internal action calculateid;
+
 
   mapping for zeqp_inventory
   {

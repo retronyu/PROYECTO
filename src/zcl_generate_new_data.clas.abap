@@ -13,7 +13,8 @@ CLASS zcl_generate_new_data DEFINITION
       generate_random_date RETURNING VALUE(rv_date) TYPE d,
       generate_random_timestampl RETURNING VALUE(rv_date) TYPE timestampl,
       ejecutar IMPORTING out TYPE REF TO if_oo_adt_classrun_out,
-      clear_tables IMPORTING out TYPE REF TO if_oo_adt_classrun_out .
+      clear_tables IMPORTING out TYPE REF TO if_oo_adt_classrun_out ,
+      add_types IMPORTING out TYPE REF TO if_oo_adt_classrun_out .
     INTERFACES if_oo_adt_classrun .
 
   PROTECTED SECTION.
@@ -36,7 +37,8 @@ CLASS zcl_generate_new_data IMPLEMENTATION.
     insert_employees( out ).
     insert_locations( out ).
     insert_assignments( out ).
-   insert_maintenances( out ).
+    insert_maintenances( out ).
+    add_types( out ).
     out->write( 'Carga de datos completada con éxito.' ).
   ENDMETHOD.
 
@@ -46,6 +48,8 @@ CLASS zcl_generate_new_data IMPLEMENTATION.
     DELETE FROM zeqp_inventory.
     DELETE FROM zhr_employee.
     DELETE FROM zeqp_location.
+    DELETE FROM zeqp_typ_catalog.
+
     out->write( 'Tablas limpiadas correctamente.' ).
   ENDMETHOD.
 
@@ -68,7 +72,7 @@ CLASS zcl_generate_new_data IMPLEMENTATION.
       wa_location-floor         = lv_index MOD 5 + 1.
       wa_location-room          = |R{ lv_index WIDTH = 2 PAD = '0' }|.
       wa_location-assigned_date = generate_random_date( ).
-      wa_location-equipment_uuid = lt_equipments[ lv_index MOD LINES( lt_equipments ) + 1 ].
+      wa_location-equipment_uuid = lt_equipments[ lv_index MOD lines( lt_equipments ) + 1 ].
       APPEND wa_location TO itab_locations.
     ENDDO.
 
@@ -176,11 +180,11 @@ CLASS zcl_generate_new_data IMPLEMENTATION.
       wa_assignment-assignment_uuid = cl_uuid_factory=>create_system_uuid( )->create_uuid_x16( ).
 
       " Obtener un equipo aleatorio
-      DATA(lv_equipment_uuid) = lt_equipments[ lv_index - 1 MOD LINES( lt_equipments ) + 1 ].
+      DATA(lv_equipment_uuid) = lt_equipments[ lv_index - 1 MOD lines( lt_equipments ) + 1 ].
       wa_assignment-equipment_uuid = lv_equipment_uuid.
 
       " Obtener un empleado aleatorio
-      DATA(lv_employee_id) = lt_employees[ lv_index MOD LINES( lt_employees   )  ].
+      DATA(lv_employee_id) = lt_employees[ lv_index MOD lines( lt_employees   )  ].
       wa_assignment-employee_id = lv_employee_id.
 
       wa_assignment-assignment_date = generate_random_date( ).
@@ -221,5 +225,69 @@ CLASS zcl_generate_new_data IMPLEMENTATION.
     INSERT zeqp_maintenance FROM TABLE @itab_maintenances.
     out->write( 'Carga exitosa de mantenimientos.' ).
   ENDMETHOD.
+  METHOD add_types.
+    DATA: lt_types     TYPE STANDARD TABLE OF zeqp_typ_catalog,
+          wa_type      TYPE zeqp_typ_catalog,
+          lv_timestamp TYPE timestampl.
+    GET TIME STAMP FIELD lv_timestamp.
+
+    " Llenar tipos de equipo
+    wa_type-client = sy-mandt.
+    wa_type-created_by = sy-uname.
+    wa_type-created_at = lv_timestamp.
+
+    wa_type-equipment_type = 'LAPTOP'.
+    wa_type-type_name      = 'Laptop'.
+    APPEND wa_type TO lt_types.
+
+    wa_type-equipment_type = 'MONITOR'.
+    wa_type-type_name      = 'Monitor'.
+    APPEND wa_type TO lt_types.
+
+    wa_type-equipment_type = 'MOUSE'.
+    wa_type-type_name      = 'Mouse'.
+    APPEND wa_type TO lt_types.
+
+    wa_type-equipment_type = 'KEYBOARD'.
+    wa_type-type_name      = 'Keyboard'.
+    APPEND wa_type TO lt_types.
+
+    wa_type-equipment_type = 'PRINTER'.
+    wa_type-type_name      = 'Printer'.
+    APPEND wa_type TO lt_types.
+
+    wa_type-equipment_type = 'SCANNER'.
+    wa_type-type_name      = 'Scanner'.
+    APPEND wa_type TO lt_types.
+
+    wa_type-equipment_type = 'PROJECTOR'.
+    wa_type-type_name      = 'Projector'.
+    APPEND wa_type TO lt_types.
+
+    wa_type-equipment_type = 'HEADSET'.
+    wa_type-type_name      = 'Headset'.
+    APPEND wa_type TO lt_types.
+
+    wa_type-equipment_type = 'WEBCAM'.
+    wa_type-type_name      = 'Webcam'.
+    APPEND wa_type TO lt_types.
+
+    wa_type-equipment_type = 'TABLET'.
+    wa_type-type_name      = 'Tablet'.
+    APPEND wa_type TO lt_types.
+
+    " Insertar registros
+    INSERT zeqp_typ_catalog FROM TABLE @lt_types.
+
+    IF sy-subrc EQ 0.
+
+      COMMIT WORK.
+      out->write( 'Carga exitosa de Tipos de equipos.' ).
+
+    ENDIF.
+
+  ENDMETHOD.
+
+
 
 ENDCLASS.
