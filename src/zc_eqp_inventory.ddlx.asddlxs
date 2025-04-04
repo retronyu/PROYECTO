@@ -45,7 +45,7 @@ annotate view ZC_EQP_Inventory with {
   EquipmentType;
   
   @UI: { lineItem: [
-            { position: 40 },
+            { position: 40 ,criticality: 'StatusCriticality' },
             { type: #FOR_ACTION, dataAction: 'MarcarReparacion', label: 'Marcar en reparación' }
           ],
           identification: [

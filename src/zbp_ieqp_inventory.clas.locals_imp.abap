@@ -100,6 +100,8 @@ CLASS lhc_Inventory IMPLEMENTATION.
 
   METHOD setInitialID.
 
+
+
   READ ENTITIES OF ZIEQP_Inventory IN LOCAL MODE
       ENTITY Inventory
         FIELDS ( Status  EquipmentID ) WITH CORRESPONDING #( keys )
@@ -147,8 +149,35 @@ DATA(new_id) = |EQP{ next_number WIDTH = 3 PAD = '0'  }|.
   METHOD calculateid.
 
 
-
-
+*   SELECT MAX( equipment_id ) FROM zeqp_inventory INTO @DATA(max_id).
+*IF max_id IS INITIAL.
+*  max_id = 'EQP000'.
+*ENDIF.
+*
+*" Extraer número (suponiendo formato EQP###)
+*DATA(numeric_part) = max_id+3(3). " 3 caracteres a partir de la posición 3
+*DATA(next_number) = CONV i( numeric_part ) + 1.
+*
+*" Reconstruir el nuevo ID con ceros a la izquierda
+*DATA(new_id) = |EQP{ next_number WIDTH = 3 PAD = '0'  }|.
+*
+*
+*    " Set default travel status
+*    MODIFY ENTITIES OF ZIEQP_Inventory IN LOCAL MODE
+*   ENTITY Inventory
+*      UPDATE
+*        FIELDS ( EquipmentID Status )
+*        WITH VALUE #( FOR key in keys
+*                      ( %tky = key-%tky
+*                        EquipmentID = new_id
+*                        Status = equip_status-disponible
+*
+*                        ) )
+*
+*    REPORTED DATA(update_reported).
+*
+*    reported = CORRESPONDING #( DEEP update_reported ).
+*
 
 
   ENDMETHOD.

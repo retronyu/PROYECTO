@@ -4,6 +4,12 @@ CLASS zcl_generate_new_data DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
+    CONSTANTS:
+      BEGIN OF equip_status,
+        mantenimiento TYPE c LENGTH 15 VALUE 'MNT',
+        disponible    TYPE c LENGTH 15 VALUE 'DSP',
+        inactivo      TYPE c LENGTH 15 VALUE 'INC',
+      END OF equip_status .
     CONSTANTS: c_max_records TYPE i VALUE 10.
     METHODS: insert_locations IMPORTING out TYPE REF TO if_oo_adt_classrun_out,
       insert_employees IMPORTING out TYPE REF TO if_oo_adt_classrun_out,
@@ -116,18 +122,18 @@ CLASS zcl_generate_new_data IMPLEMENTATION.
 
       CASE lv_num.
         WHEN 0 .
-          zstatus ='ACT'.
+          zstatus =  equip_status-disponible.
         WHEN 1 .
-          zstatus ='MNT'.
+          zstatus =  equip_status-mantenimiento.
         WHEN OTHERS .
-          zstatus ='INA'.
+          zstatus = equip_status-inactivo.
       ENDCASE.
 
       wa_equipment-equipment_uuid = cl_system_uuid=>if_system_uuid_static~create_uuid_x16( ).
       wa_equipment-equipment_id   = |EQP{ lv_index WIDTH = 3 PAD = '0' }|.
       wa_equipment-equipment_name = |Equipo { lv_index }|.
       wa_equipment-equipment_type = |Tipo { lv_index MOD 3 + 1 }|.
-      wa_equipment-status = zstatus .
+      wa_equipment-status = zstatus  .
       wa_equipment-manufacturer   = |Fabricante { lv_index }|.
       wa_equipment-model_number   = |Modelo { lv_index }|.
       wa_equipment-serial_number  = |SN-{ lv_index WIDTH = 5 PAD = '0' }|.

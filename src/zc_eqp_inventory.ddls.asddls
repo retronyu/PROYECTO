@@ -12,6 +12,7 @@ define  root view entity ZC_EQP_Inventory as projection on ZIEQP_Inventory
       EquipmentName,
       EquipmentType,
       Status,
+      StatusCriticality,
       Manufacturer,
       ModelNumber,
       SerialNumber,
