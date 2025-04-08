@@ -25,12 +25,80 @@ CLASS lhc_Inventory DEFINITION INHERITING FROM cl_abap_behavior_handler.
     METHODS calculateid FOR MODIFY
       IMPORTING keys FOR ACTION Inventory~calculateid.
 
+      METHODS is_create_granted
+    RETURNING VALUE(create_granted) TYPE abap_bool.
+
+  METHODS is_update_granted
+    IMPORTING has_before_image TYPE abap_bool
+              status            TYPE zstatus_eqp
+    RETURNING VALUE(update_granted) TYPE abap_bool.
+
+  METHODS is_delete_granted
+    IMPORTING has_before_image TYPE abap_bool
+              status            TYPE zstatus_eqp
+    RETURNING VALUE(delete_granted) TYPE abap_bool.
+
 
 ENDCLASS.
 
 CLASS lhc_Inventory IMPLEMENTATION.
 
   METHOD get_instance_authorizations.
+DATA: has_before_image      TYPE abap_bool,
+        is_update_requested   TYPE abap_bool,
+        is_delete_requested   TYPE abap_bool,
+        update_granted        TYPE abap_bool,
+        delete_granted        TYPE abap_bool.
+
+  " Leer los estados actuales desde la base activa
+  READ ENTITIES OF ZIEQP_Inventory IN LOCAL MODE
+    ENTITY Inventory
+    FIELDS ( Status )
+    WITH CORRESPONDING #( keys )
+    RESULT DATA(equipment_list)
+    FAILED failed.
+
+  IF equipment_list IS INITIAL.
+    RETURN.
+  ENDIF.
+
+  " Leer imágenes previas de base activa
+  SELECT FROM zeqp_inventory
+    FIELDS equipment_uuid, status
+    FOR ALL ENTRIES IN @equipment_list
+    WHERE equipment_uuid = @equipment_list-equipmentuuid
+    INTO TABLE @DATA(before_images).
+
+  is_update_requested = COND #( WHEN requested_authorizations-%update = if_abap_behv=>mk-on THEN abap_true ELSE abap_false ).
+  is_delete_requested = COND #( WHEN requested_authorizations-%delete = if_abap_behv=>mk-on THEN abap_true ELSE abap_false ).
+
+  LOOP AT equipment_list INTO DATA(equipment).
+
+    READ TABLE before_images INTO DATA(before_image)
+      WITH KEY equipment_uuid = equipment-EquipmentUUID BINARY SEARCH.
+
+    has_before_image = COND #( WHEN sy-subrc = 0 THEN abap_true ELSE abap_false ).
+
+    IF is_update_requested = abap_true.
+      IF has_before_image = abap_true.
+        update_granted = is_update_granted( has_before_image = abap_true status = before_image-status ).
+      ELSE.
+        update_granted = is_create_granted( ).
+      ENDIF.
+    ENDIF.
+
+    IF is_delete_requested = abap_true.
+      delete_granted = is_delete_granted( has_before_image = has_before_image status = before_image-status ).
+    ENDIF.
+
+    APPEND VALUE #(
+      %tky     = equipment-%tky
+      %update  = COND #( WHEN update_granted = abap_true THEN if_abap_behv=>auth-allowed ELSE if_abap_behv=>auth-unauthorized )
+      %delete  = COND #( WHEN delete_granted = abap_true THEN if_abap_behv=>auth-allowed ELSE if_abap_behv=>auth-unauthorized )
+    ) TO result.
+
+  ENDLOOP.
+
   ENDMETHOD.
 
 
@@ -71,6 +139,25 @@ CLASS lhc_Inventory IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD get_instance_features.
+
+  READ ENTITIES OF ZIEQP_Inventory IN LOCAL MODE
+    ENTITY Inventory
+    FIELDS ( Status ) WITH CORRESPONDING #( keys )
+    RESULT DATA(equipment_list).
+
+  result = VALUE #(
+    FOR equipment IN equipment_list
+      LET is_mark_allowed = COND #(
+        WHEN equipment-Status = equip_status-mantenimiento
+        THEN if_abap_behv=>fc-o-disabled
+        ELSE if_abap_behv=>fc-o-enabled )
+      IN
+      (
+        %tky = equipment-%tky
+        %action-MarcarReparacion = is_mark_allowed
+      )
+  ).
+
   ENDMETHOD.
 
   METHOD MarcarReparacion.
@@ -183,5 +270,18 @@ DATA(new_id) = |EQP{ next_number WIDTH = 3 PAD = '0'  }|.
   ENDMETHOD.
 
 
+
+  METHOD is_create_granted.
+ create_granted = abap_true. " Simulación
+  ENDMETHOD.
+
+  METHOD is_delete_granted.
+   delete_granted = abap_true. " Simulación
+
+  ENDMETHOD.
+
+  METHOD is_update_granted.
+  update_granted = abap_true. " Simulación
+  ENDMETHOD.
 
 ENDCLASS.

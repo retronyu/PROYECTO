@@ -52,7 +52,7 @@ CLASS zcl_generate_new_data IMPLEMENTATION.
     DELETE FROM zeqp_maintenance.
     DELETE FROM zeqp_assignment.
     DELETE FROM zeqp_inventory.
-    DELETE FROM zhr_employee.
+    DELETE FROM zrh_employee.
     DELETE FROM zeqp_location.
     DELETE FROM zeqp_typ_catalog.
 
@@ -122,7 +122,7 @@ CLASS zcl_generate_new_data IMPLEMENTATION.
 
       CASE lv_num.
         WHEN 0 .
-          zstatus =  equip_status-disponible.
+           zstatus = equip_status-inactivo.
         WHEN 1 .
           zstatus =  equip_status-mantenimiento.
         WHEN OTHERS .
@@ -190,7 +190,7 @@ CLASS zcl_generate_new_data IMPLEMENTATION.
       wa_assignment-equipment_uuid = lv_equipment_uuid.
 
       " Obtener un empleado aleatorio
-      DATA(lv_employee_id) = lt_employees[ lv_index MOD lines( lt_employees   )  ].
+      DATA(lv_employee_id) = lt_employees[ lv_index MOD lines( lt_employees  ) + 1 ].
       wa_assignment-employee_id = lv_employee_id.
 
       wa_assignment-assignment_date = generate_random_date( ).

@@ -10,24 +10,53 @@ annotate view ZC_EQP_Location with {
                   label: 'Location Details',
                   position: 10 } ]
   
-  @UI: { identification: [{ position: 1, label: 'Location UUID' }] }
-  LocationUUID;
   
+  
+ @UI: {
+    identification: [{ position: 1, label: 'UUID de Ubicación' }]
+  }
+  LocationUUID;
+
   @UI.hidden: true
   EquipmentUUID;
-  
-  @UI: { lineItem: [{ position: 20 }], identification: [{ position: 20 }] }
+
+@Consumption.valueHelpDefinition: [{
+  entity: { name: 'ZVH_LOCATIONS', element: 'LocationID' },
+  additionalBinding: [
+    { localElement: 'LocationName', element: 'LocationName', usage: #RESULT },
+    { localElement: 'Building',     element: 'Building',     usage: #RESULT },
+    { localElement: 'Floor',        element: 'Floor',        usage: #RESULT },
+    { localElement: 'Room',         element: 'Room',         usage: #RESULT }
+  ]
+}]
+  @UI: {
+    lineItem: [{ position: 20, label: 'ID de Ubicación' }],
+    identification: [{ position: 20, label: 'ID de Ubicación' }],
+    selectionField: [{ position: 10 }]
+  }
   LocationID;
-  
-  @UI: { lineItem: [{ position: 30 }], identification: [{ position: 30 }] }
+
+  @UI: {
+    lineItem: [{ position: 30, label: 'Nombre de Ubicación' }],
+    identification: [{ position: 30, label: 'Nombre de Ubicación' }]
+  }
   LocationName;
-  
-  @UI: { lineItem: [{ position: 40 }], identification: [{ position: 40 }] }
+
+  @UI: {
+    lineItem: [{ position: 40, label: 'Edificio' }],
+    identification: [{ position: 40, label: 'Edificio' }]
+  }
   Building;
-  
-  @UI: { lineItem: [{ position: 50 }], identification: [{ position: 50 }] }
+
+  @UI: {
+    lineItem: [{ position: 50, label: 'Piso' }],
+    identification: [{ position: 50, label: 'Piso' }]
+  }
   Floor;
-  
-  @UI: { lineItem: [{ position: 60 }], identification: [{ position: 60 }] }
+
+  @UI: {
+    lineItem: [{ position: 60, label: 'Sala' }],
+    identification: [{ position: 60, label: 'Sala' }]
+  }
   Room;
 }

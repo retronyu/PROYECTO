@@ -5,6 +5,8 @@
 define view entity ZC_EQP_Assignment as projection on ZIEQP_Assignment {
  key AssignmentUUID,
       EquipmentUUID,
+      _Inventory.EquipmentID as EquipmentID,
+      EquipmentID_Aux,
       @Search.defaultSearchElement: true
      EmployeeID,
       AssignmentDate,

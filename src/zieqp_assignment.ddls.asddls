@@ -21,6 +21,7 @@ association [0..1] to ZI_HR_Employee as _Employee on $projection.EmployeeID = _E
       last_changed_by       as LastChangedBy,
       @Semantics.systemDateTime.localInstanceLastChangedAt: true
       local_last_changed_at as LocalLastChangedAt,
+      equipment_id_aux as EquipmentID_Aux,
 
       /* associations */
       _Inventory,

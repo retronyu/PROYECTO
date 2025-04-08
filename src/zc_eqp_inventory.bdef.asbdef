@@ -1,7 +1,9 @@
 projection;
+use draft;
 //strict ( 2 ); //Uncomment this line in order to enable strict mode 2. The strict mode has two variants (strict(1), strict(2)) and is prerequisite to be future proof regarding syntax and to be able to release your BO.
 
 define behavior for ZC_EQP_Inventory alias Inventory
+//use etag
 {
   use create;
   use update;
@@ -10,31 +12,34 @@ define behavior for ZC_EQP_Inventory alias Inventory
   use action MarcarReparacion;
 
 
-  use association _Assignment { create; }
-  use association _Location { create; }
-  use association _Maintenance { create; }
+ use association _Assignment { create; with draft; }
+use association _Location   { create; with draft; }
+use association _Maintenance { create; with draft; }
 }
 
 define behavior for ZC_EQP_Assignment alias Assignment
+//use etag
 {
   use update;
   use delete;
 
-  use association _Inventory;
+  use association _Inventory {  with draft; }
 }
 
 define behavior for ZC_EQP_Location alias Location
+//use etag
 {
   use update;
   use delete;
 
-  use association _Inventory;
+   use association _Inventory {  with draft; }
 }
 
 define behavior for ZC_EQP_Maintenance alias Mantenience
+//use etag
 {
   use update;
   use delete;
 
-  use association _Inventory;
+   use association _Inventory {  with draft; }
 }

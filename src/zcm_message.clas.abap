@@ -20,6 +20,15 @@ CLASS zcm_message DEFINITION
         attr3 TYPE scx_attrname VALUE ' ',
         attr4 TYPE scx_attrname VALUE ' ',
       END OF type_check .
+      CONSTANTS:
+        BEGIN OF duplicate_assignment,
+        msgid TYPE symsgid VALUE 'Z_MESSAGE',
+        msgno TYPE symsgno VALUE '002',
+        attr1 TYPE scx_attrname VALUE ' ',
+        attr2 TYPE scx_attrname VALUE ' ',
+        attr3 TYPE scx_attrname VALUE ' ',
+        attr4 TYPE scx_attrname VALUE ' ',
+      END OF duplicate_assignment .
 
     METHODS constructor
       IMPORTING

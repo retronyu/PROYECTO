@@ -4,31 +4,47 @@
                 typeNamePlural: 'Assignments',
 //                title: { type: #STANDARD, value: 'EmployeeID' } } }
  title: { type: #STANDARD, value: 'AssignmentUUID' } } }
-annotate view ZC_EQP_Assignment with {
+annotate view ZC_EQP_Assignment with
+{
   @UI.facet: [ { id: 'AssignmentDetails',
                   purpose: #STANDARD,
                   type: #IDENTIFICATION_REFERENCE,
                   label: 'Assignment Details',
                   position: 10 } ]
-  
-  @UI: { identification: [{ position: 1, label: 'Assignment UUID' }] }
+
+  @UI: { identification: [{ position: 1, label: 'UUID de Asignación' }] }
   AssignmentUUID;
+
+@Consumption.valueHelpDefinition: [
+  { entity: { name: 'ZVH_EQUIP_AVAILABLE', element: 'EquipmentID' } }
+]
+@UI: {
+  identification: [{ position: 5, label: 'Equipo a asignar (ID)' }]
   
-  @UI.hidden: true
-  EquipmentUUID;
-  
- @UI: { lineItem: [{ position: 20 }], identification: [{ position: 20 }] }
+}
+EquipmentID_Aux;
+
+  @UI: { lineItem: [{ position: 10 }], identification: [{  label: 'ID del equipo' }] }
+  EquipmentID;
+
+  @UI: { lineItem: [{ position: 20 }], identification: [{ position: 20, label: 'ID del Empleado' }] }
+  @Consumption.valueHelpDefinition: [
+  { entity: { name: 'ZVH_EMPLOYEE', element: 'EmployeeID' } }
+]
   EmployeeID;
-  
-  @UI: { lineItem: [{ position: 30 }], identification: [{ position: 30 }] }
+
+  @UI: { lineItem: [{ position: 30 }], identification: [{ position: 30, label: 'Fecha de Asignación' }] }
   AssignmentDate;
-  
-  @UI: { lineItem: [{ position: 40 }], identification: [{ position: 40 }] }
+
+  @UI: { lineItem: [{ position: 40 }], identification: [{ position: 40, label: 'Fecha de Devolución' }] }
   ReturnDate;
-  
-  @UI: { lineItem: [{ position: 50 }], identification: [{ position: 50 }] }
+
+  @UI: { lineItem: [{ position: 50 }], identification: [{ position: 50, label: 'Ubicación' }] }
+  @Consumption.valueHelpDefinition: [
+  { entity: { name: 'ZVH_LOCATIONS', element: 'LocationID' } }
+]
   Location;
-  
-  @UI: { lineItem: [{ position: 60 }], identification: [{ position: 60 }] }
+
+  @UI: { lineItem: [{ position: 60 }], identification: [{ position: 60, label: 'Propósito' }] }
   Purpose;
 }
