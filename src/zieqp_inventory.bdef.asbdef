@@ -28,10 +28,12 @@ etag master LocalLastChangedAt
   determination setInitialID on modify { create; }
 
   validation validartype on save { field EquipmentType; }
+
   internal action calculateid;
 
 draft determine action Prepare {
   validation validartype;
+
 }
 
   mapping for zeqp_inventory
@@ -64,8 +66,10 @@ authorization dependent by _Inventory
   field ( readonly ) AssignmentUUID, EquipmentUUID;
   field ( numbering : managed ) AssignmentUUID;
 
-  validation validateUniqueAssignment on save { create; field EquipmentUUID; }
-  determination resolveUUIDFromID on modify { create; }
+
+  validation validateAssignmentLocaMatch on save { create; field Location; }
+
+
 
 
 

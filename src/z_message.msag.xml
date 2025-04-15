@@ -20,6 +20,12 @@
      <MSGNR>002</MSGNR>
      <TEXT>Ya existe una asignación activa para este equipo</TEXT>
     </T100>
+    <T100>
+     <SPRSL>S</SPRSL>
+     <ARBGB>Z_MESSAGE</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>La ubicación asignada no coincide con la ubicación actual del equipo.</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

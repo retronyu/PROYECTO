@@ -29,6 +29,15 @@ CLASS zcm_message DEFINITION
         attr3 TYPE scx_attrname VALUE ' ',
         attr4 TYPE scx_attrname VALUE ' ',
       END OF duplicate_assignment .
+      CONSTANTS:
+        BEGIN OF location_mismatch,
+        msgid TYPE symsgid VALUE 'Z_MESSAGE',
+        msgno TYPE symsgno VALUE '003',
+        attr1 TYPE scx_attrname VALUE ' ',
+        attr2 TYPE scx_attrname VALUE ' ',
+        attr3 TYPE scx_attrname VALUE ' ',
+        attr4 TYPE scx_attrname VALUE ' ',
+      END OF location_mismatch .
 
     METHODS constructor
       IMPORTING
